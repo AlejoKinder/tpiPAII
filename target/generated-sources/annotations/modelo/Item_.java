@@ -8,7 +8,7 @@ import modelo.Costo;
 import modelo.Obra;
 import modelo.Renglonfoja;
 
-@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2023-03-18T17:18:16", comments="EclipseLink-2.7.10.v20211216-rNA")
+@Generated(value="org.eclipse.persistence.internal.jpa.modelgen.CanonicalModelProcessor", date="2023-04-01T16:05:20", comments="EclipseLink-2.7.10.v20211216-rNA")
 @StaticMetamodel(Item.class)
 public class Item_ { 
 

@@ -69,6 +69,15 @@ public class Renglonfoja implements Serializable {
         this.vIdItem = vItem;
     }
     
+    public Renglonfoja(Integer vIdRenglon, Integer vPorcentajeAnterior, Item vItem, Fojamedicion vFoja) {
+        this.vIdRenglon = vIdRenglon;
+        this.vPorcentajeAnterior = vPorcentajeAnterior;
+        this.vPorcentajeActual = 0;
+        this.vPorcentajeAcumulado = vPorcentajeAnterior;
+        this.vIdItem = vItem;
+        this.vIdFoja = vFoja;
+    }
+    
     public void DefinirPorcentajeActual(Integer vPorcentajeActual) throws Exception {
         if ((vPorcentajeActual + this.vPorcentajeAnterior)<=100){
             this.vPorcentajeActual = vPorcentajeActual;

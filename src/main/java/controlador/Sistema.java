@@ -591,7 +591,7 @@ public class Sistema {
 
     //--------------------------------------------------------------------------
     
-    public void CrearFojaMedicion (Obra vObra, String vFechaEmision) throws Exception{
+    /*public void CrearFojaMedicion (Obra vObra, String vFechaEmision) throws Exception{
 
         if (!vObra.getItemList().isEmpty()){
 
@@ -612,17 +612,17 @@ public class Sistema {
         }else{
             throw new Exception ("La obra ingresada, no tiene items incluidos");
         }
-    }
+    }*/
     
-    public void CrearFojamedicionVista (String vDenominacion, String vFechaEmision) throws Exception{
-        
+    /*public void CrearFojamedicionVista (String vDenominacion, String vFechaEmision) throws Exception{
+        System.out.println("A");
         Obra vObra = obraJpa.findObraByName(vDenominacion);
         
         if (vObra != null){
             
             if (!vObra.getItemList().isEmpty()){
 
-                Fojamedicion vNuevaFoja = new Fojamedicion (vFojas.size()+1, vFechaEmision, vObra);
+                Fojamedicion vNuevaFoja = new Fojamedicion (fojaJpa.getFojamedicionCount()+1, vFechaEmision, vObra);
 
                 fojaJpa.create(vNuevaFoja);
 
@@ -642,13 +642,13 @@ public class Sistema {
         }else{
             throw new Exception ("La obra ingresada, no existe");
         }
-    }
+    }*/
     
     public Fojamedicion BuscarFojamedicion (Integer vIdObra, String vFechaEmision) throws Exception{
         Obra vObra = obraJpa.findObra(vIdObra);
         if (vObra != null){
             
-            return fojaJpa.findFojamedicionPorObraYFecha(vObra.getVIdObra(), vFechaEmision);
+            return fojaJpa.findFojamedicionPorObraYFecha(vObra, vFechaEmision);
 
         }else{
             throw new Exception ("La obra ingresada, no existe");
@@ -659,7 +659,7 @@ public class Sistema {
         Obra vObra = obraJpa.findObraByName(vDenominacion);
         if (vObra != null){
  
-            return fojaJpa.findFojamedicionPorObraYFecha(vObra.getVIdObra(), vFechaEmision);
+            return fojaJpa.findFojamedicionPorObraYFecha(vObra, vFechaEmision);
 
         }else{
             throw new Exception ("La obra ingresada, no existe");
@@ -687,7 +687,7 @@ public class Sistema {
         
     }
     
-    public void ActualizarFojamedicion (Fojamedicion vFoja, Integer vPorcentajes[]) throws Exception {
+    /*public void ActualizarFojamedicion (Fojamedicion vFoja, Integer vPorcentajes[]) throws Exception {
         
         if (vPorcentajes.length == vFoja.getRenglonfojaList().size()){
 
@@ -706,7 +706,7 @@ public class Sistema {
         }else{
             throw new Exception ("La cantidad de valores ingresada, no es igual a la cantidad de items de la foja");
         }
-    }
+    }*/
     
     public Integer DevolverAvanceFoja (Fojamedicion vFoja){
 
@@ -715,7 +715,7 @@ public class Sistema {
             Double vAvance = 0.0;
             Integer vPos = 0;
             for (Renglonfoja a: vFoja.getRenglonfojaList()){
-                
+                if(vFoja.getVObra() != null) System.out.println("D");
                 vAvance = vAvance + ((a.getVPorcentajeAcumulado()*vFoja.getVObra().getItemList().get(vPos).getVIncidencia())/100);
                 vPos = vPos + 1;
             }
@@ -767,9 +767,12 @@ public class Sistema {
         
         if (vContador != 0){
             String [][] vArray = new String[vContador][4];
+            
+            List<Fojamedicion> fojas = new ArrayList<Fojamedicion>();
+            fojas = fojaJpa.findFojasObra(vObra);
         
             Integer vPos = 0;
-            for (Fojamedicion a: vFojas){
+            for (Fojamedicion a: fojas){
 
                 if (a.getVObra().getVDenominacion().equals(vDenominacion)){
                     vArray[vPos][0] = a.getVIdFoja().toString();
@@ -1157,23 +1160,88 @@ public class Sistema {
     }
 
     //Esto creo el netbeans xd.
-    public Fojamedicion BuscarFojaMedicionVista(String string, String string0) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Fojamedicion BuscarFojaMedicionVista(String vDenominacion, String vFecha) {
+        
+        Obra vObra = obraJpa.findObraByName(vDenominacion);
+        try{
+            Fojamedicion vFoja = fojaJpa.findFojamedicionPorObraYFecha(vObra, vFecha);
+            return vFoja;
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
-    
-    //Esto creo el netbeans xd.
-    public void CrearFojaMedicionVista(String toString, String format) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    //Esto creo el netbeans xd.
-    public void ActualizarFojaMedicion(Fojamedicion vFoja, Integer[] vPorcentajes) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
+   
     //Esto creo el netbeans xd.
     public Fojamedicion BuscarFojaMedicion(int i, String string) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void CrearFojaMedicionVista(String vDenominacion, String vFechaEmision) throws Exception{
+        System.out.println("A");
+        Obra vObra = obraJpa.findObraByName(vDenominacion);
+        
+        if (vObra != null){
+            
+            if (!vObra.getItemList().isEmpty()){
+
+                Fojamedicion vNuevaFoja = new Fojamedicion (fojaJpa.getFojamedicionCount()+1, vFechaEmision, vObra);
+
+                fojaJpa.create(vNuevaFoja);
+
+                Fojamedicion vUltimaFoja = this.BuscarUltimaFoja(vObra.getVIdObra());
+
+                //Agregar condicion para cuando la fecha emision de la nueva foja es menor que el de la ultima foja
+                System.out.println(vUltimaFoja.getVIdFoja());
+                
+                for (Item a: vObra.getItemList()){
+
+                    Renglonfoja vNuevoRenglon = null;
+
+                    if (vUltimaFoja == null){
+                        vNuevoRenglon = new Renglonfoja (renglonfojaJpa.getRenglonfojaCount()+1, 0, a, vNuevaFoja);
+                    }else{
+                        vNuevoRenglon = new Renglonfoja (renglonfojaJpa.getRenglonfojaCount()+1, vUltimaFoja.DevolverAvanceAnterior(a), a, vNuevaFoja);
+                    }
+                    
+                    renglonfojaJpa.create(vNuevoRenglon);
+                    
+                    
+                    vNuevaFoja.AgregarRenglon(vNuevoRenglon);
+                }
+
+                
+                fojaJpa.edit(vNuevaFoja);
+
+            }else{
+                throw new Exception ("La obra ingresada, no tiene items incluidos");
+            }
+        }else{
+            throw new Exception ("La obra ingresada, no existe");
+        }
+    }
+
+    public void ActualizarFojaMedicion(Fojamedicion vFoja, Integer vPorcentajes[]) throws Exception {
+        
+        if (vPorcentajes.length == vFoja.getRenglonfojaList().size()){
+
+            if (vAux.BuscarValorArray(vPorcentajes, null) == false){
+
+                Integer vPos = 0;
+                for (Renglonfoja a: vFoja.getRenglonfojaList()){
+                    a.DefinirPorcentajeActual(vPorcentajes[vPos]);
+                    vPos = vPos + 1;
+                    
+                    renglonfojaJpa.edit(a);
+                    
+                }
+
+            }else{
+                throw new Exception ("No se puede asignar orden null a un porcentaje de avance");
+            }
+        }else{
+            throw new Exception ("La cantidad de valores ingresada, no es igual a la cantidad de items de la foja");
+        } 
     }
     
     

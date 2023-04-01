@@ -163,7 +163,7 @@ public class VistaFojas2 extends JFrame{
                 CargarDatos();
                 ActualizarTabla();
                 
-                vSis.CrearCertificadoPagoVista(vFoja, vFoja.getVFechaEmision());
+                //vSis.CrearCertificadoPagoVista(vFoja, vFoja.getVFechaEmision());
                 
                 vSis.AbrirVistaFojas1();
                 

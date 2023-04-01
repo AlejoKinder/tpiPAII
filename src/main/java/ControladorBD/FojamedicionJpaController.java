@@ -260,7 +260,7 @@ public class FojamedicionJpaController implements Serializable {
         }
     }
     
-    public Fojamedicion findFojamedicionPorObraYFecha(Integer vIdObra, String fechaEmision) {
+    /*public Fojamedicion findFojamedicionPorObraYFecha(Integer vIdObra, String fechaEmision) {
         EntityManager em = getEntityManager();
         try {
             TypedQuery<Fojamedicion> query = em.createQuery(
@@ -269,6 +269,33 @@ public class FojamedicionJpaController implements Serializable {
             query.setParameter("obra", vIdObra);
             query.setParameter("fechaEmision", fechaEmision);
             return query.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }*/
+    
+    public Fojamedicion findFojamedicionPorObraYFecha(Obra vObra, String fechaEmision) {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Fojamedicion> query = em.createQuery(
+                "SELECT f FROM Fojamedicion f WHERE f.vObra = :obra AND f.vFechaEmision = :fechaEmision", 
+                Fojamedicion.class);
+            query.setParameter("obra", vObra);
+            query.setParameter("fechaEmision", fechaEmision);
+            return query.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Fojamedicion> findFojasObra(Obra vObra) {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Fojamedicion> query = em.createQuery(
+                "SELECT f FROM Fojamedicion f WHERE f.vObra = :obra",
+                Fojamedicion.class);
+            query.setParameter("obra", vObra);
+            return query.getResultList();
         } finally {
             em.close();
         }
@@ -313,6 +340,8 @@ public class FojamedicionJpaController implements Serializable {
             em.close();
         }
     }
+    
+    
 
     public int getFojamedicionCount() {
         EntityManager em = getEntityManager();

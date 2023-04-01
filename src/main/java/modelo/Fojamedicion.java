@@ -63,21 +63,9 @@ public class Fojamedicion implements Serializable {
         this.vObra = vObra;
     }
     
-    public void CrearRenglones (Fojamedicion vUltimaFoja) {
-        
-        for (Item a: this.vObra.getItemList()){
-            
-            Renglonfoja vNuevoRenglon = null;
-            
-            if (vUltimaFoja == null){
-                vNuevoRenglon = new Renglonfoja (this.renglonfojaList.size()+1, 0, a);
-            }else{
-                vNuevoRenglon = new Renglonfoja (this.renglonfojaList.size()+1, vUltimaFoja.DevolverAvanceAnterior(a), a);
-            }
-            
-            this.renglonfojaList.add(vNuevoRenglon);
-        }
-    
+    public void AgregarRenglon (Renglonfoja vNuevoRenglon) {
+
+        this.renglonfojaList.add(vNuevoRenglon);
     }
     
     public Integer DevolverAvanceAnterior(Item vItem){
